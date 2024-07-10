@@ -32,6 +32,12 @@ public class UserController {
         return "/user/user_form";
     }
 
+    @PostMapping("/saveUser")
+    public String saveUser(@ModelAttribute("user") User user) {
+        userService.saveUser(user);
+        return "redirect:/user";
+    }
+
     @RequestMapping("/deleteUser")
     public String deleteEmployee(@RequestParam("userId") Long id) {
         userService.deleteUser(id);

@@ -4,7 +4,7 @@
 <h2>User Info</h2>
 <br><br>
 
-<form th:action="@{/admin/saveUser}" th:object="${user}" method="post">
+<form th:action="@{/user/saveUser}" th:object="${user}" method="post">
     <input type="hidden" th:field="*{id}" />
 
     <div>
@@ -12,7 +12,7 @@
     </div>
     <br><br>
     <div>
-        Password: <input type="text"/>
+        Password: <input type="password" th:field="*{password}"/>
     </div>
     <br><br>
     <div>

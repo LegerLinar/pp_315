@@ -48,6 +48,7 @@ public class AdminController {
     public String updateUser(@RequestParam("userId") Long id, Model model) {
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
+        model.addAttribute("roles", roleRepository.findAll());
         return "/admin/user_form";
     }
 
