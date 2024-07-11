@@ -19,7 +19,7 @@ public class AdminController {
     private final RoleService roleService;
 
     public AdminController(UserService userService
-    , RoleService roleService) {
+        , RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
 
@@ -31,6 +31,7 @@ public class AdminController {
         model.addAttribute("allUsers", users);
         return "/admin/all_users_view";
     }
+
     @GetMapping("/addNewUser")
     public String addNewUser(Model model) {
         User user = new User();
@@ -38,6 +39,7 @@ public class AdminController {
         model.addAttribute("roles", roleService.findAll());
         return "/admin/user_form";
     }
+
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
