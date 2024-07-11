@@ -1,23 +1,69 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/springsecurity5">
 <head>
-    <title> For User </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>User Page</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.6.0/css/bootstrap.min.css">
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <span class="navbar-text mr-auto text-light" th:text="${user.email} + ' with roles: ' + ${user.roles[0]}">
+    </span>
+    <div class="ml-auto">
+        <a class="nav-link text-white-50" href="/logout">Logout</a>
+    </div>
+</nav>
 
-<br><br>
+<div class="d-flex">
+    <div id="sidebar" class="bg-light p-4" style="min-width: 200px;">
+        <ul class="nav flex-column">
+            <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                <a class="nav-link active" href="/admin">Admin</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/user">User</a>
+            </li>
+        </ul>
+    </div>
 
-<h1>User Page</h1>
-<div>
-    <p>ID: <span th:text="${user.id}"></span></p>
-    <p>Username: <span th:text="${user.username}"></span></p>
-    <p>Email: <span th:text="${user.email}"></span></p>
-    <p>Age: <span th:text="${user.age}"></span></p>
-    <p>Role: <span th:each="role : ${user.roles}" th:text="${role}"></span></p>
+    <div id="content" class="p-4" style="flex: 1;">
+        <h2 class="mb-4">User information-page</h2>
+        <div class="card">
+            <div class="card-header">
+                About user
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Age</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td th:text="${user.id}">3</td>
+                        <td th:text="${user.username}">user</td>
+                        <td th:text="${user.username}">user</td>
+                        <td th:text="${user.age}">30</td>
+                        <td th:text="${user.email}">user@mail.ru</td>
+                        <td th:each="role : ${user.roles}" th:text="${role}">USER</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-<input type="button" value="Logout"
-       onclick="window.location.href='/logout'"/>
-</div>
+
+
+<script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+<script src="/webjars/popper.js/1.16.1/umd/popper.min.js"></script>
+<script src="/webjars/bootstrap/4.6.0/js/bootstrap.min.js"></script>
 </body>
 </html>

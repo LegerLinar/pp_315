@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User loadUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.findByEmail(username);
     }
 
 }

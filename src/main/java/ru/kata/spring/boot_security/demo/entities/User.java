@@ -22,18 +22,22 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @Column(name = "username")
-    private String username;
-
     @Column(name = "password")
     private String password;
+
+    @Column(name = "email"
+        , unique = true)
+    private String email;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
 
     @Column(name = "age")
     private int age;
 
-    @Column(name = "email")
-    private String email;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @LazyCollection(LazyCollectionOption.EXTRA)
@@ -51,9 +55,6 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -82,12 +83,14 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     public void setPassword(String password) {
@@ -118,12 +121,29 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public User(String username, String password, int age, String email, Set<Role> roles) {
-        this.username = username;
+    public User(String password, String email, String firstname, String lastname, int age, Set<Role> roles) {
         this.password = password;
-        this.age = age;
         this.email = email;
+        this.firstName = firstname;
+        this.lastName = lastname;
+        this.age = age;
         this.roles = roles;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public User() {

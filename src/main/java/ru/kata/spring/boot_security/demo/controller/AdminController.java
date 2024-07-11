@@ -8,6 +8,7 @@ import ru.kata.spring.boot_security.demo.entities.User;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 
@@ -26,19 +27,24 @@ public class AdminController {
     }
 
     @GetMapping
-    public String showAllUsers(Model model) {
+    public String showAllUsers(Model model, Principal principal) {
+        User user = userService.loadUserByUsername(principal.getName());
+        User newUser = new User();
         List<User> users = userService.getAllUsers();
         model.addAttribute("allUsers", users);
+        model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("user", user);
+        model.addAttribute("newUser", newUser);
+
         return "/admin/all_users_view";
     }
 
-    @GetMapping("/addNewUser")
-    public String addNewUser(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        model.addAttribute("roles", roleService.findAll());
-        return "/admin/user_form";
-    }
+//    @GetMapping("/addNewUser")
+//    public String addNewUser(Model model) {
+//        User user = new User();
+//        model.addAttribute("user", user);
+//        return "/admin/user_form";
+//    }
 
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") User user) {
@@ -54,7 +60,7 @@ public class AdminController {
         return "/admin/user_form";
     }
 
-    @DeleteMapping("/deleteUser")
+    @PostMapping("/deleteUser")
     public String deleteUser(@RequestParam("userId") Long id) {
         userService.deleteUser(id);
 
