@@ -48,17 +48,22 @@ public class AdminController {
 
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") User user) {
-        userService.saveUser(user);
+        userService.save(user);
+        return "redirect:/admin";
+    }
+    @PostMapping("/updateUser")
+    public String update(@ModelAttribute("user") User user) {
+        userService.update(user);
         return "redirect:/admin";
     }
 
-    @GetMapping("/updateUser")
-    public String updateUser(@RequestParam("userId") Long id, Model model) {
-        User user = userService.getUserById(id);
-        model.addAttribute("user", user);
-        model.addAttribute("roles", roleService.findAll());
-        return "/admin/user_form";
-    }
+//    @GetMapping("/updateUser")
+//    public String updateUser(@RequestParam("userId") Long id, Model model) {
+//        User user = userService.getUserById(id);
+//        model.addAttribute("user", user);
+//        model.addAttribute("roles", roleService.findAll());
+//        return "/admin/user_form";
+//    }
 
     @PostMapping("/deleteUser")
     public String deleteUser(@RequestParam("userId") Long id) {

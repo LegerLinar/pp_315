@@ -8,9 +8,9 @@ import java.util.Set;
 
 public interface UserService {
 
-    void saveUser(User user);
+    void save(User user);
+    void update(User user);
     void deleteUser(Long id);
     List<User> getAllUsers();
-    User getUserById(Long id);
     User loadUserByUsername(String username);
 }

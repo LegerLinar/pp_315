@@ -48,8 +48,8 @@
                     <tbody>
                     <tr>
                         <td th:text="${user.id}">3</td>
-                        <td th:text="${user.username}">user</td>
-                        <td th:text="${user.username}">user</td>
+                        <td th:text="${user.firstName}">user</td>
+                        <td th:text="${user.lastName}">user</td>
                         <td th:text="${user.age}">30</td>
                         <td th:text="${user.email}">user@mail.ru</td>
                         <td th:each="role : ${user.roles}" th:text="${role}">USER</td>
