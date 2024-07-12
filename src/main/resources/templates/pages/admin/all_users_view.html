@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -9,7 +9,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <span class="navbar-text mr-auto text-light" th:text="${user.email} + ' with roles: ' + ${user.roles[0]}"/>
+    <span class="navbar-text mr-auto text-light" id="user-info"></span>
     <div class="ml-auto">
         <a class="nav-link text-white-50" href="/logout">Logout</a>
     </div>
@@ -52,59 +52,42 @@
                         <th>Actions</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr th:each="user : ${allUsers}">
-                        <td th:text="${user.id}"></td>
-                        <td th:text="${user.firstName}">First Name</td>
-                        <td th:text="${user.lastName}">Last Name</td>
-                        <td th:text="${user.email}">Email</td>
-                        <td th:text="${user.age}">Age</td>
-                        <td th:each="role : ${user.roles}" th:text="${role}"></td>
-                        <td>
-                            <a class="btn btn-primary btn-sm" href="#" th:data-toggle="modal" th:data-target="'#editModal' + ${user.id}" >Edit</a>
-                            <form th:action="@{/admin/deleteUser}" method="post" style="display:inline-block;">
-                                <input type="hidden" th:name="userId" th:value="${user.id}"/>
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
+                    <tbody id="users-tbody">
                     </tbody>
                 </table>
             </div>
-            <!--   Add new user         -->
             <div class="tab-pane fade" id="add-user">
                 <div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
                     <div class="w-50">
                         <h4 class="text-center">Add new user</h4>
-                        <form th:action="@{/admin/saveUser}" th:object="${newUser}" method="post">
+                        <form id="user-form">
                             <div class="form-group">
                                 <label for="firstName">First name</label>
-                                <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required>
+                                <input type="text" class="form-control" id="firstName" required>
                             </div>
                             <div class="form-group">
                                 <label for="lastName">Last name</label>
-                                <input type="text" class="form-control" id="lastName" th:field="*{lastName}" required>
+                                <input type="text" class="form-control" id="lastName" required>
                             </div>
                             <div class="form-group">
                                 <label for="age">Age</label>
-                                <input type="number" class="form-control" id="age" th:field="*{age}" required>
+                                <input type="number" class="form-control" id="age" required>
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" th:field="*{email}" required>
+                                <input type="email" class="form-control" id="email" required>
                             </div>
                             <div class="form-group">
                                 <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" th:field="*{password}"
-                                       required>
+                                <input type="password" class="form-control" id="password" required>
                             </div>
                             <div class="form-group">
                                 <label for="roles">Roles</label>
-                                <select class="form-control" id="roles" th:field="*{roles}">
-                                    <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role}"></option>
+                                <select class="form-control" id="roles" multiple>
+                                    <!-- Options will be loaded dynamically -->
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block">Add new user</button>
+                            <button type="submit" class="btn btn-primary btn-block">Save user</button>
                         </form>
                     </div>
                 </div>
@@ -112,57 +95,229 @@
         </div>
     </div>
 </div>
-<!--Edit user-->
-<div th:each="user : ${allUsers}">
-    <div th:id="'editModal' + ${user.id}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit User</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form th:action="@{/admin/saveUser}" method="post">
-                        <input type="hidden" name="id" th:value="${user.id}" />
-                        <div class="form-group">
-                            <label for="editFirstName">First Name</label>
-                            <input type="text" class="form-control" id="editFirstName" name="firstName" th:value="${user.firstName}" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editLastName">Last Name</label>
-                            <input type="text" class="form-control" id="editLastName" name="lastName" th:value="${user.lastName}" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editAge">Age</label>
-                            <input type="number" class="form-control" id="editAge" name="age" th:value="${user.age}" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editEmail">Email</label>
-                            <input type="email" class="form-control" id="editEmail" name="email" th:value="${user.email}" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editPassword">Password</label>
-                            <input type="password" class="form-control" id="editPassword" name="password" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editRoles">Roles</label>
-                            <select class="form-control" id="editRoles" name="roles">
-                                <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}" th:selected="${user.roles.contains(role)}"></option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </form>
-                </div>
+
+<!-- Edit user modal -->
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-user-form">
+                    <input type="hidden" id="edit-user-id">
+                    <div class="form-group">
+                        <label for="editFirstName">First name</label>
+                        <input type="text" class="form-control" id="editFirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editLastName">Last name</label>
+                        <input type="text" class="form-control" id="editLastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editAge">Age</label>
+                        <input type="number" class="form-control" id="editAge" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editEmail">Email</label>
+                        <input type="email" class="form-control" id="editEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPassword">Password</label>
+                        <input type="password" class="form-control" id="editPassword">
+                    </div>
+                    <div class="form-group">
+                        <label for="editRoles">Roles</label>
+                        <select class="form-control" id="editRoles" multiple>
+                            <!-- Options will be loaded dynamically -->
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
-
-<script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
 <script src="/webjars/popper.js/1.16.1/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.6.0/js/bootstrap.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let editingUserId = null;
+
+        // Fetch and display users
+        fetch('/api/admin/users')
+            .then(response => response.json())
+            .then(users => {
+                const usersTbody = document.getElementById('users-tbody');
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.firstName}</td>
+                    <td>${user.lastName}</td>
+                    <td>${user.email}</td>
+                    <td>${user.age}</td>
+                    <td>${user.roles.map(role => role.name).join(', ')}</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm edit-btn" data-id="${user.id}">Edit</button>
+                        <button class="btn btn-danger btn-sm delete-btn" data-id="${user.id}">Delete</button>
+                    </td>
+                `;
+                    usersTbody.appendChild(row);
+                });
+            });
+
+        // Load roles into the select options
+        fetch('/api/admin/roles')
+            .then(response => response.json())
+            .then(roles => {
+                const rolesSelect = document.getElementById('roles');
+                roles.forEach(role => {
+                    const option = document.createElement('option');
+                    option.value = role.id;
+                    option.text = role.name;
+                    rolesSelect.appendChild(option);
+                });
+
+                const editRolesSelect = document.getElementById('editRoles');
+                roles.forEach(role => {
+                    const option = document.createElement('option');
+                    option.value = role.id;
+                    option.text = role.name;
+                    editRolesSelect.appendChild(option);
+                });
+            });
+
+        // Handle form submission for new user
+        document.getElementById('user-form').addEventListener('submit', (event) => {
+            event.preventDefault();
+            const selectedRoles = Array.from(document.getElementById('roles').selectedOptions).map(option => ({
+                id: option.value,
+                name: option.text
+            }));
+
+            const user = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                age: document.getElementById('age').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                roles: selectedRoles
+            };
+
+            fetch('/api/admin/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            }).then(response => response.json())
+                .then(savedUser => {
+                    const usersTbody = document.getElementById('users-tbody');
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${savedUser.id}</td>
+                        <td>${savedUser.firstName}</td>
+                        <td>${savedUser.lastName}</td>
+                        <td>${savedUser.email}</td>
+                        <td>${savedUser.age}</td>
+                        <td>${savedUser.roles.map(role => role.name).join(', ')}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm edit-btn" data-id="${savedUser.id}">Edit</button>
+                            <button class="btn btn-danger btn-sm delete-btn" data-id="${savedUser.id}">Delete</button>
+                        </td>
+                    `;
+                    usersTbody.appendChild(row);
+
+                    document.getElementById('user-form').reset();
+                });
+        });
+
+        // Handle user deletion
+        document.getElementById('users-tbody').addEventListener('click', function (event) {
+            if (event.target.classList.contains('delete-btn')) {
+                const userId = event.target.dataset.id;
+                fetch(`/api/admin/users/${userId}`, {
+                    method: 'DELETE'
+                }).then(() => {
+                    event.target.closest('tr').remove();
+                });
+            }
+        });
+
+        // Handle user editing
+        document.getElementById('users-tbody').addEventListener('click', function (event) {
+            if (event.target.classList.contains('edit-btn')) {
+                const userId = event.target.dataset.id;
+                fetch(`/api/admin/users/${userId}`)
+                    .then(response => response.json())
+                    .then(user => {
+                        document.getElementById('edit-user-id').value = user.id;
+                        document.getElementById('editFirstName').value = user.firstName;
+                        document.getElementById('editLastName').value = user.lastName;
+                        document.getElementById('editAge').value = user.age;
+                        document.getElementById('editEmail').value = user.email;
+                        document.getElementById('editPassword').value = '';
+
+                        const editRolesSelect = document.getElementById('editRoles');
+                        Array.from(editRolesSelect.options).forEach(option => {
+                            option.selected = user.roles.some(role => role.id == option.value);
+                        });
+
+                        $('#editUserModal').modal('show');
+                    });
+            }
+        });
+
+        // Handle form submission for editing user
+        document.getElementById('edit-user-form').addEventListener('submit', (event) => {
+            event.preventDefault();
+            const userId = document.getElementById('edit-user-id').value;
+            const selectedRoles = Array.from(document.getElementById('editRoles').selectedOptions).map(option => ({
+                id: option.value,
+                name: option.text
+            }));
+
+            const user = {
+                id: userId,
+                firstName: document.getElementById('editFirstName').value,
+                lastName: document.getElementById('editLastName').value,
+                age: document.getElementById('editAge').value,
+                email: document.getElementById('editEmail').value,
+                password: document.getElementById('editPassword').value,
+                roles: selectedRoles
+            };
+
+            fetch(`/api/admin/users/${userId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            }).then(response => response.json())
+                .then(savedUser => {
+                    const row = document.querySelector(`button[data-id="${savedUser.id}"]`).closest('tr');
+                    row.innerHTML = `
+                        <td>${savedUser.id}</td>
+                        <td>${savedUser.firstName}</td>
+                        <td>${savedUser.lastName}</td>
+                        <td>${savedUser.email}</td>
+                        <td>${savedUser.age}</td>
+                        <td>${savedUser.roles.map(role => role.name).join(', ')}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm edit-btn" data-id="${savedUser.id}">Edit</button>
+                            <button class="btn btn-danger btn-sm delete-btn" data-id="${savedUser.id}">Delete</button>
+                        </td>
+                    `;
+
+                    $('#editUserModal').modal('hide');
+                });
+        });
+    });
+</script>
 </body>
 </html>

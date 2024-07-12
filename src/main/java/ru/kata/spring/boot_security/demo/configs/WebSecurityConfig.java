@@ -33,7 +33,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .formLogin().usernameParameter("email")
             .successHandler(successUserHandler).permitAll()
             .and()
-            .logout().permitAll();
+            .logout().permitAll()
+            .and().csrf().disable();
     }
 
     @Bean
