@@ -124,7 +124,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form th:action="@{/admin/updateUser}" method="post">
+                    <form th:action="@{/admin/saveUser}" method="post">
                         <input type="hidden" name="id" th:value="${user.id}" />
                         <div class="form-group">
                             <label for="editFirstName">First Name</label>

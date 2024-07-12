@@ -11,21 +11,15 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService{
-
+public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
-    @PersistenceContext
-    private EntityManager entityManager;
-
 
     public UserServiceImpl(UserRepository userRepository
-    , BCryptPasswordEncoder passwordEncoder
-    , EntityManager entityManager) {
+        , BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.entityManager = entityManager;
     }
 
     @Transactional
@@ -35,12 +29,6 @@ public class UserServiceImpl implements UserService{
         userRepository.save(user);
     }
 
-    @Transactional
-    @Override
-    public void update(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        entityManager.merge(user);
-    }
 
     @Transactional
     @Override
