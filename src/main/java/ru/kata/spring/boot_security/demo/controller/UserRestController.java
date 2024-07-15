@@ -17,7 +17,7 @@ public class UserRestController {
 
 
     @GetMapping
-    public User showUser(Principal principal) {
+    public User getUser(Principal principal) {
         return userService.loadUserByUsername(principal.getName());
     }
 
