@@ -19,7 +19,8 @@ public class MvcConfig implements WebMvcConfigurer {
         this.applicationContext = applicationContext;
     }
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("login");
+        registry.addViewController("/admin").setViewName("admin/admin_view");
+        registry.addViewController("/user").setViewName("user/user_view");
     }
     @Bean
     public SpringResourceTemplateResolver templateResolver() {

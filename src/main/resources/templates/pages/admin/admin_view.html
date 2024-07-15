@@ -83,7 +83,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="roles">Roles</label>
-                                <select class="form-control" id="roles" multiple>
+                                <select class="form-control" id="roles" multiple required>
                                     <!-- Options will be loaded dynamically -->
                                 </select>
                             </div>
@@ -148,6 +148,11 @@
     document.addEventListener('DOMContentLoaded', () => {
         let editingUserId = null;
 
+        fetch('/api/admin')
+            .then(response => response.json())
+            .then(user => {
+                $('#user-info').text(user.email + ' with roles: ' + user.roles.map(role => role.name).join(', '));
+            });
         // Fetch and display users
         fetch('/api/admin/users')
             .then(response => response.json())

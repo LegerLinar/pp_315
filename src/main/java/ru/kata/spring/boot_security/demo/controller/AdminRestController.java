@@ -1,11 +1,13 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.entities.Role;
 import ru.kata.spring.boot_security.demo.entities.User;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -18,6 +20,12 @@ public class AdminRestController {
                                RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
+    }
+
+
+    @GetMapping
+    public User getAdmin(Principal principal){
+        return userService.loadUserByUsername(principal.getName());
     }
 
     @GetMapping("/users")
